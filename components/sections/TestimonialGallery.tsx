@@ -106,8 +106,9 @@ export function TestimonialGallery() {
   return (
     <section
       ref={sectionRef}
+      id="work"
       aria-labelledby="testimonials-heading"
-      className="bg-white py-[clamp(80px,11vh,160px)] text-ink"
+      className="scroll-mt-[var(--nav-h)] bg-white py-[clamp(80px,11vh,160px)] text-ink"
     >
       <div className="px-[var(--gutter)]">
         <header className="mx-auto flex max-w-3xl flex-col items-center gap-4 text-center">

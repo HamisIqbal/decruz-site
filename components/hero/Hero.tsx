@@ -160,8 +160,6 @@ export function Hero() {
                 variant="outline"
                 size="md"
                 data-cursor="cta"
-                target="_blank"
-                rel="noreferrer"
               >
                 {hero.secondary.label}
               </Button>
