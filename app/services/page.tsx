@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { PageHero } from "@/components/layout/PageHero";
 import { ServicesSection } from "@/components/sections/ServicesSection";
 import { ProcessStack } from "@/components/sections/ProcessStack";
-import { StatsSection } from "@/components/sections/StatsSection";
 import { CtaSection } from "@/components/sections/CtaSection";
 
 export const metadata: Metadata = {
@@ -21,7 +20,6 @@ export default function ServicesPage() {
       />
       <ServicesSection />
       <ProcessStack />
-      <StatsSection />
       <CtaSection />
     </main>
   );

@@ -16,13 +16,50 @@ export type Testimonial = {
 
 const CLOUD = "https://res.cloudinary.com/dcsewsmhd/video/upload";
 
+// Ordered highest-impact first (biggest results lead). Posters for the newer
+// clips are generated from the video itself (Cloudinary serves a frame when the
+// public ID is requested as .jpg).
 export const testimonials: Testimonial[] = [
   {
-    // TODO: filename gives no name/company — confirm who this is.
+    id: "angel-trujillo",
+    name: "Angel Trujillo",
+    company: "Trujillo Masonry & Pools",
+    quote: "Around $300,000 in projects within three months of running ads.",
+    poster: `/testimonials/angel-trujillo.jpg`,
+    videoSrc: `${CLOUD}/v1782428459/Trujillo_Masonry_Pools_-_Angel_Trujillo_lyjda9.mp4`,
+  },
+  {
+    id: "v-300k",
+    name: "Juan Trujillo",
+    role: "Son of Ruben Trujillo",
+    company: "Trujillo Masonry & Pools",
+    quote: "$300,000 in new projects from running ads.",
+    poster: `/testimonials/v-300k.jpg`,
+    videoSrc: `${CLOUD}/v1782490430/300k_ruasp3.mp4`,
+  },
+  {
+    id: "oscar",
+    name: "Oscar Chavez",
+    company: "Whitestone Construction & Cabinetry",
+    quote:
+      "Closed $169,000 in four months — $48,000 of it pure profit from the ads.",
+    poster: `/testimonials/oscar.jpg`,
+    videoSrc: `${CLOUD}/v1782490612/Oscar-testimonial_fcmgzt.mp4`,
+  },
+  {
+    id: "v-new",
+    name: "Armando",
+    company: "Absolute Tile Kitchen and Bath",
+    poster: `/testimonials/v-new.jpg`,
+    videoSrc: `${CLOUD}/v1782490462/testimonialnew_tcabw7.mp4`,
+  },
+  {
+    // Same person/details as the Cameron clip (id: "cameron"), per client.
     id: "featured",
-    name: "Featured Client",
-    company: "deCRUZ",
-    poster: `${CLOUD}/v1782428308/testimonial_qeywiq.jpg`,
+    name: "Cameron",
+    role: "Owner",
+    company: "Bakersfield Concrete Coatings",
+    poster: `/testimonials/featured.jpg`,
     videoSrc: `${CLOUD}/v1782428308/testimonial_qeywiq.mp4`,
   },
   {
@@ -30,7 +67,7 @@ export const testimonials: Testimonial[] = [
     name: "Omar Tapia",
     role: "Owner",
     company: "MIM Construction",
-    poster: `${CLOUD}/v1782428408/MIM_Construction_-_Owner_Omar_Tapia_tltax9.jpg`,
+    poster: `/testimonials/tapia.jpg`,
     videoSrc: `${CLOUD}/v1782428408/MIM_Construction_-_Owner_Omar_Tapia_tltax9.mp4`,
   },
   {
@@ -38,7 +75,7 @@ export const testimonials: Testimonial[] = [
     name: "Diego",
     role: "Owner",
     company: "All Terrain Roofing",
-    poster: `${CLOUD}/v1782428380/All_Terrain_Roofing_-_Owner_Diego_pi8tgq.jpg`,
+    poster: `/testimonials/diego.jpg`,
     videoSrc: `${CLOUD}/v1782428380/All_Terrain_Roofing_-_Owner_Diego_pi8tgq.mp4`,
   },
   {
@@ -46,7 +83,7 @@ export const testimonials: Testimonial[] = [
     name: "Ruben Trujillo",
     role: "Owner",
     company: "Trujillo Masonry & Pools",
-    poster: `${CLOUD}/v1782428420/Trujillo_Masonry_Pools_-_Owner_Ruben_Trujillo_fbmvlc.jpg`,
+    poster: `/testimonials/ruben-trujillo.jpg`,
     videoSrc: `${CLOUD}/v1782428420/Trujillo_Masonry_Pools_-_Owner_Ruben_Trujillo_fbmvlc.mp4`,
   },
   {
@@ -54,22 +91,15 @@ export const testimonials: Testimonial[] = [
     name: "Julio",
     role: "Owner",
     company: "Intrepid Plastering",
-    poster: `${CLOUD}/v1782428425/Intrepid_Plastering_-_Owner_Julio_1_mdtg0v.jpg`,
+    poster: `/testimonials/julio.jpg`,
     videoSrc: `${CLOUD}/v1782428425/Intrepid_Plastering_-_Owner_Julio_1_mdtg0v.mp4`,
-  },
-  {
-    id: "angel-trujillo",
-    name: "Angel Trujillo",
-    company: "Trujillo Masonry & Pools",
-    poster: `${CLOUD}/v1782428459/Trujillo_Masonry_Pools_-_Angel_Trujillo_lyjda9.jpg`,
-    videoSrc: `${CLOUD}/v1782428459/Trujillo_Masonry_Pools_-_Angel_Trujillo_lyjda9.mp4`,
   },
   {
     id: "eliezer",
     name: "Eliezer",
     role: "Co-Owner",
     company: "Ark Ranch Construction",
-    poster: `${CLOUD}/v1782428460/Ark_Ranch_Construction_-_Co_Owner__Eliezer_e6szmv.jpg`,
+    poster: `/testimonials/eliezer.jpg`,
     videoSrc: `${CLOUD}/v1782428460/Ark_Ranch_Construction_-_Co_Owner__Eliezer_e6szmv.mp4`,
   },
   {
@@ -77,7 +107,7 @@ export const testimonials: Testimonial[] = [
     name: "Cameron",
     role: "Owner",
     company: "Bakersfield Concrete Coatings",
-    poster: `${CLOUD}/v1782428480/Bakersfield_Concrete_Coatings_-_Owner_-_Cameron_fzls99.jpg`,
+    poster: `/testimonials/cameron.jpg`,
     videoSrc: `${CLOUD}/v1782428480/Bakersfield_Concrete_Coatings_-_Owner_-_Cameron_fzls99.mp4`,
   },
 ];

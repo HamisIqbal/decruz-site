@@ -25,7 +25,12 @@ export function Logo({
         height={92}
         priority
         className={`h-10 w-auto transition-[filter,transform] duration-[240ms] [transition-timing-function:var(--ease-out-soft)] group-hover:scale-[1.03] sm:h-12 ${
-          onDark ? "[filter:invert(1)]" : ""
+          onDark
+            ? // Inverted to white over the hero. The hero's top-right corner is
+              // the lightest part of the scrim, so a bare white mark can vanish
+              // against bright imagery — a drop shadow keeps it legible anywhere.
+              "[filter:invert(1)_drop-shadow(0_1px_4px_rgba(0,0,0,0.65))]"
+            : ""
         }`}
       />
     </Link>

@@ -22,6 +22,6 @@ export const overlayMeta = {
 };
 
 export const primaryCta = {
-  label: "Let's Talk",
+  label: "Book your free strategy session",
   href: FORM_LINK,
 };

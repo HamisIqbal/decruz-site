@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { X } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {
@@ -23,7 +23,10 @@ function cld(url: string | undefined, transform: string): string | undefined {
 // Muted hover loop: width-capped + trimmed to the first 6s → ~0.8MB, so it
 // streams in fast. The full clip plays (with sound) in the spotlight.
 const PREVIEW_TF = "f_auto,q_auto,w_640,c_limit,du_6";
-const POSTER_TF = "f_auto,q_auto,w_720,c_limit";
+// Grid posters: cards are narrow (≤3-up), so a smaller width keeps each
+// transform light, and `so_0` pulls the first frame — far cheaper for
+// Cloudinary to generate than its default mid-clip frame, so they paint fast.
+const POSTER_TF = "f_auto,q_auto,w_540,c_limit,so_0";
 const FULL_TF = "f_auto,q_auto"; // spotlight playback (with sound)
 
 export function TestimonialGallery() {
@@ -87,6 +90,18 @@ export function TestimonialGallery() {
   }, []);
 
   const close = useCallback(() => setOpenIndex(null), []);
+  // Wrap-around navigation between clips while the spotlight is open.
+  const navigate = useCallback(
+    (dir: number) =>
+      setOpenIndex((i) =>
+        i === null
+          ? i
+          : (i + dir + testimonials.length) % testimonials.length,
+      ),
+    [],
+  );
+  const prev = useCallback(() => navigate(-1), [navigate]);
+  const next = useCallback(() => navigate(1), [navigate]);
 
   return (
     <section
@@ -116,7 +131,12 @@ export function TestimonialGallery() {
 
       <AnimatePresence>
         {openIndex !== null && (
-          <TestimonialSpotlight t={testimonials[openIndex]} onClose={close} />
+          <TestimonialSpotlight
+            t={testimonials[openIndex]}
+            onClose={close}
+            onPrev={prev}
+            onNext={next}
+          />
         )}
       </AnimatePresence>
     </section>
@@ -133,6 +153,7 @@ function TestimonialCard({
   const videoRef = useRef<HTMLVideoElement>(null);
   const cardRef = useRef<HTMLButtonElement>(null);
   const [active, setActive] = useState(false);
+  const [posterLoaded, setPosterLoaded] = useState(false);
 
   // React does not reliably set the `muted` DOM *property* from the attribute,
   // which makes the browser treat hover-autoplay as "unmuted" and block it.
@@ -188,9 +209,26 @@ function TestimonialCard({
       onBlur={stop}
       className="group relative block aspect-[9/16] w-full cursor-pointer overflow-hidden rounded-md border border-line bg-black text-left text-white focus-visible:outline-none"
     >
+      {/* Poster as a real <img>: lazy-loaded (off-screen cards don't fetch
+          until near the viewport) and faded in, so the card never sits as a
+          bare black box waiting on the video's poster attribute. */}
+      {posterSrc ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={posterSrc}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          onLoad={() => setPosterLoaded(true)}
+          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 ${
+            posterLoaded ? "opacity-100" : "opacity-0"
+          }`}
+        />
+      ) : null}
+
       <video
         ref={videoRef}
-        poster={posterSrc}
         muted
         loop
         playsInline
@@ -256,48 +294,79 @@ function TestimonialCard({
 function TestimonialSpotlight({
   t,
   onClose,
+  onPrev,
+  onNext,
 }: {
   t: Testimonial;
   onClose: () => void;
+  onPrev: () => void;
+  onNext: () => void;
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const swipe = useRef<{ x: number; y: number; onVideo: boolean } | null>(null);
 
-  // ESC to close + lock body scroll while open.
+  // Lock body scroll while open (scrollbar width compensated → no layout shift).
   useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    document.addEventListener("keydown", onKey);
-
     const { body, documentElement: html } = document;
     const scrollbar = window.innerWidth - html.clientWidth;
     const prevOverflow = body.style.overflow;
     const prevPad = body.style.paddingRight;
     body.style.overflow = "hidden";
     if (scrollbar > 0) body.style.paddingRight = `${scrollbar}px`;
-
     return () => {
-      document.removeEventListener("keydown", onKey);
       body.style.overflow = prevOverflow;
       body.style.paddingRight = prevPad;
     };
-  }, [onClose]);
+  }, []);
 
-  // Start playback with sound (the opening click is the user gesture). If the
-  // browser still blocks unmuted autoplay, the native controls let them press
-  // play; either way focus lands on the close button for keyboard users.
+  // Keyboard: ESC closes, ←/→ navigate between clips.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+      else if (e.key === "ArrowRight") onNext();
+      else if (e.key === "ArrowLeft") onPrev();
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose, onNext, onPrev]);
+
+  // Move focus to the close button when the spotlight first opens.
+  useEffect(() => {
+    closeRef.current?.focus();
+  }, []);
+
+  // (Re)start playback with sound on open and on every navigation. Keyed on
+  // t.id so it re-runs per clip; combined with the remounting `<video key>`
+  // below, each clip gets a fresh, fully-seekable timeline — fixing clips whose
+  // scrubber was stuck because the element was reused from a previous source.
   useEffect(() => {
     const v = videoRef.current;
     if (v) {
       v.muted = false;
       v.play().catch(() => {});
     }
-    closeRef.current?.focus();
-  }, []);
+  }, [t.id]);
 
   const src = cld(t.videoSrc, FULL_TF);
   const posterSrc = cld(t.poster, POSTER_TF);
+
+  // Swipe-to-navigate on touch — but ignore gestures that begin on the video
+  // so the native scrubber/controls keep working.
+  const onPointerDown = (e: React.PointerEvent) => {
+    const onVideo = !!(e.target as Element).closest?.("[data-spot-video]");
+    swipe.current = { x: e.clientX, y: e.clientY, onVideo };
+  };
+  const onPointerUp = (e: React.PointerEvent) => {
+    const s = swipe.current;
+    swipe.current = null;
+    if (!s || s.onVideo) return;
+    const dx = e.clientX - s.x;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(e.clientY - s.y)) {
+      if (dx < 0) onNext();
+      else onPrev();
+    }
+  };
 
   return (
     <motion.div
@@ -309,6 +378,8 @@ function TestimonialSpotlight({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.25 }}
+      onPointerDown={onPointerDown}
+      onPointerUp={onPointerUp}
     >
       {/* Backdrop — click to close */}
       <button
@@ -318,6 +389,26 @@ function TestimonialSpotlight({
         className="absolute inset-0 h-full w-full cursor-default bg-black/80 backdrop-blur-md"
       />
 
+      {/* Prev / Next — overlaid at the screen edges (works on mobile too). */}
+      <button
+        type="button"
+        aria-label="Previous testimonial"
+        onClick={onPrev}
+        data-cursor="nav"
+        className="absolute left-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/60 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black focus-visible:outline-none sm:left-5 sm:h-14 sm:w-14"
+      >
+        <ChevronLeft className="h-6 w-6" strokeWidth={1.75} aria-hidden="true" />
+      </button>
+      <button
+        type="button"
+        aria-label="Next testimonial"
+        onClick={onNext}
+        data-cursor="nav"
+        className="absolute right-2 top-1/2 z-20 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 bg-black/60 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black focus-visible:outline-none sm:right-5 sm:h-14 sm:w-14"
+      >
+        <ChevronRight className="h-6 w-6" strokeWidth={1.75} aria-hidden="true" />
+      </button>
+
       {/* Dialog */}
       <motion.div
         initial={{ scale: 0.94, opacity: 0, y: 12 }}
@@ -326,18 +417,26 @@ function TestimonialSpotlight({
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
         className="relative z-10 flex max-h-full w-full max-w-[min(1100px,92vw)] flex-col items-center"
       >
-        <video
+        {/* `key` remounts the element per clip → clean, seekable timeline.
+            preload="auto" loads enough to make the scrubber usable immediately. */}
+        <motion.video
+          key={t.id}
+          data-spot-video=""
           ref={videoRef}
           src={src}
           poster={posterSrc}
           controls
           autoPlay
           playsInline
+          preload="auto"
           controlsList="nodownload noplaybackrate"
-          className="max-h-[82vh] w-auto max-w-full rounded-md bg-black shadow-2xl"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.2 }}
+          className="max-h-[72vh] w-auto max-w-full rounded-md bg-black shadow-2xl sm:max-h-[82vh]"
         />
 
-        <p className="mt-4 text-center font-mono text-[0.7rem] uppercase tracking-[0.16em] text-white/70">
+        <p className="mt-4 max-w-[80vw] text-center font-mono text-[0.7rem] uppercase tracking-[0.16em] text-white/70">
           {t.name}
           {t.role || t.company ? " · " : ""}
           {t.role ? `${t.role}, ` : ""}
@@ -350,7 +449,7 @@ function TestimonialSpotlight({
           type="button"
           onClick={onClose}
           aria-label="Close video"
-          className="absolute -right-2 -top-2 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/70 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black focus-visible:outline-none sm:-right-4 sm:-top-4"
+          className="absolute -right-2 -top-2 z-20 flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/70 text-white backdrop-blur-md transition-colors hover:bg-white hover:text-black focus-visible:outline-none sm:-right-4 sm:-top-4"
         >
           <X className="h-5 w-5" strokeWidth={1.75} aria-hidden="true" />
         </button>

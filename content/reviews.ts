@@ -35,24 +35,31 @@ export const reviews: Review[] = [
   },
   {
     id: "r4",
-    name: "Omar T.",
+    name: "Amaar T.",
     company: "MIM Construction",
     quote:
-      "They handled the site, the branding, and the ads and made it painless. Worth every dollar and then some.",
+      "We closed about $180,000 worth of ADUs within two months of running ads with deCRUZ — it keeps our crew booked solid.",
   },
   {
     id: "r5",
     name: "Cameron W.",
     company: "Bakersfield Concrete Coatings",
     quote:
-      "We went from invisible online to the first contractor people find. It completely changed how we win bids.",
+      "deCRUZ took me from working part-time to doing this full-time. The steady work they bring in changed everything for my business.",
   },
   {
     id: "r6",
-    name: "Ruben T.",
+    name: "Angel Trujillo",
     company: "Trujillo Masonry & Pools",
     quote:
-      "Professional, fast, and they actually get contractors. Easily the best marketing decision we've made.",
+      "deCRUZ made us around $300,000 in projects within three months of running ads — and the leads haven't slowed down since.",
+  },
+  {
+    id: "r7",
+    name: "Oscar Chavez",
+    company: "Whitestone Construction & Cabinetry",
+    quote:
+      "I closed $169,000 in just four months of running ads with deCRUZ — $48,000 of that was pure profit from their ads alone.",
   },
 ];
 

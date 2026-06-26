@@ -57,7 +57,9 @@ export function Header() {
             href={primaryCta.href}
             variant={scrolled ? "primary" : "inverse"}
             size="md"
-            className="hidden text-[0.95rem] sm:inline-flex"
+            /* Mobile: compact, wraps to two lines, capped width so it can't
+               crowd out the logo. Desktop (sm+): single line, full size. */
+            className="max-w-[9.5rem] whitespace-normal! px-2.5 py-1.5 h-auto min-h-10 text-center text-[0.72rem] leading-[1.2] sm:max-w-none sm:whitespace-nowrap! sm:h-12 sm:min-h-0 sm:px-7 sm:py-0 sm:text-[0.95rem] sm:leading-normal"
             data-cursor="cta"
             target="_blank"
             rel="noreferrer"
