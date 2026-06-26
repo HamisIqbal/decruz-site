@@ -1,0 +1,86 @@
+"use client";
+
+import { useCallback, useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
+import { Logo } from "./Logo";
+import { MenuButton } from "./MenuButton";
+import { MenuOverlay } from "./MenuOverlay";
+import { Button } from "@/components/ui/Button";
+import { primaryCta } from "@/content/nav";
+
+const MENU_ID = "site-menu";
+
+export function Header() {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // Condense the bar after a small scroll. State only flips on threshold cross,
+  // so scrolling does not spam re-renders.
+  useEffect(() => {
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        setScrolled((prev) => {
+          const next = window.scrollY > 24;
+          return prev === next ? prev : next;
+        });
+      });
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  const close = useCallback(() => setOpen(false), []);
+  const toggle = useCallback(() => setOpen((v) => !v), []);
+
+  // At the top the bar sits over the dark hero → light content; once condensed
+  // White-dominant site: nav content is always black on white. The bar is
+  // transparent over the white hero and gains a frosted backdrop on scroll.
+  return (
+    <>
+      <header
+        className={`fixed inset-x-0 top-0 z-[20] border-b transition-colors duration-[240ms] [transition-timing-function:var(--ease-out-soft)] ${
+          scrolled
+            ? "border-line bg-white/95"
+            : "border-transparent bg-transparent"
+        }`}
+      >
+        <div className="flex h-[var(--nav-h)] items-center justify-between px-[var(--gutter)]">
+          <Button
+            href={primaryCta.href}
+            variant={scrolled ? "primary" : "inverse"}
+            size="md"
+            className="hidden text-[0.95rem] sm:inline-flex"
+            data-cursor="cta"
+            target="_blank"
+            rel="noreferrer"
+          >
+            {primaryCta.label}
+          </Button>
+
+          <div className="flex items-center gap-2 sm:gap-4">
+            <Logo onDark={!scrolled} />
+            <MenuButton
+              ref={triggerRef}
+              isOpen={open}
+              onClick={toggle}
+              controlsId={MENU_ID}
+              onDark={!scrolled}
+            />
+          </div>
+        </div>
+      </header>
+
+      <AnimatePresence>
+        {open && <MenuOverlay id={MENU_ID} onClose={close} />}
+      </AnimatePresence>
+    </>
+  );
+}
