@@ -6,7 +6,7 @@ import { FORM_LINK } from "./site";
  * (Intentionally no SEO offering.)
  */
 export type Service = {
-  icon: "Target" | "BarChart3" | "Share2" | "Camera";
+  icon: "Target" | "Megaphone" | "BarChart3" | "Share2" | "Camera";
   title: string;
   description: string;
 };
@@ -22,6 +22,12 @@ export const services: Service[] = [
     title: "Digital Strategy",
     description:
       "A clear roadmap that turns your goals into a predictable stream of qualified leads.",
+  },
+  {
+    icon: "Megaphone",
+    title: "Meta Advertising",
+    description:
+      "Facebook and Instagram ad campaigns built specifically for contractors — putting your work in front of ready-to-hire homeowners.",
   },
   {
     icon: "BarChart3",

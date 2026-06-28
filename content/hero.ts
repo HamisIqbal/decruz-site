@@ -2,7 +2,7 @@ import { FORM_LINK } from "./site";
 
 /** Hero copy. Focus: helping contractors grow through marketing. */
 export const hero = {
-  eyebrow: "Construction Marketing Studio",
+  eyebrow: "Construction Marketing",
   // Headline split into lines so the mask-reveal animates line by line.
   // `accent` marks the word rendered in blush.
   headline: [
@@ -14,7 +14,7 @@ export const hero = {
     ],
   ],
   description:
-    "deCRUZ turns your work into a brand, a site, and a pipeline of qualified leads. Marketing engineered for builders who want to grow.",
+    "deCRUZ specializes in Meta advertising — Instagram and Facebook ads built exclusively for contractors. We turn your work into a brand, a site, and a pipeline of qualified leads.",
   primary: { label: "Book your free strategy session", href: FORM_LINK },
   // In-page jump to the video testimonials section (id="work").
   secondary: { label: "See our work", href: "#work" },

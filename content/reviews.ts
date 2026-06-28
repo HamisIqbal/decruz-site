@@ -25,7 +25,7 @@ export const reviews: Review[] = [
     name: "Oscar Chavez",
     company: "Whitestone Construction & Cabinetry",
     quote:
-      "I closed $169,000 in just four months of running ads with deCRUZ — $48,000 of that was pure profit from their ads alone.",
+      "I closed $162,900 in just four months of running ads with deCRUZ — $48,000 of that was pure profit from their ads alone.",
   },
   {
     id: "omar-tapia",

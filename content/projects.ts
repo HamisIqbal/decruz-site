@@ -24,47 +24,55 @@ export const projects: Project[] = [
     client: "MIM Construction",
     category: "General Construction",
     summary:
-      "A full brand refresh and a fast, modern website, paired with on-site video that shows the quality of their builds.",
-    services: ["Branding", "Website", "Video"],
-  },
-  {
-    id: "all-terrain",
-    client: "All Terrain Roofing",
-    category: "Roofing",
-    summary:
-      "Lead-focused ad campaigns and social content that put a trusted local roofer in front of ready-to-hire homeowners.",
-    services: ["PPC", "Social", "Website"],
+      "A full brand refresh paired with on-site video that shows the quality of their builds.",
+    services: ["Branding", "Video"],
   },
   {
     id: "trujillo",
     client: "Trujillo Masonry & Pools",
     category: "Masonry & Pools",
     summary:
-      "Cinematic project videography and a portfolio site that lets their craftsmanship sell before the first call.",
-    services: ["Video", "Website", "Branding"],
+      "Cinematic project videography that lets their craftsmanship sell before the first call.",
+    services: ["Video", "Branding"],
   },
   {
     id: "intrepid",
     client: "Intrepid Plastering",
     category: "Plastering",
     summary:
-      "A clean brand identity and a consistent social presence that keeps a specialist trade top of mind across the Valley.",
-    services: ["Branding", "Social"],
+      "A clean brand identity, sharp graphic design, and a consistent social presence that keeps a specialist trade top of mind across the Valley.",
+    services: ["Branding", "Graphic Design", "Social"],
   },
   {
     id: "ark-ranch",
     client: "Ark Ranch Construction",
     category: "Construction",
     summary:
-      "Strategy, site, and content built to match the scale of their projects and attract bigger, better-fit clients.",
-    services: ["Strategy", "Website", "Content"],
+      "Cinematic video and photography built to match the scale of their projects and attract bigger, better-fit clients.",
+    services: ["Strategy", "Video", "Photography"],
   },
   {
     id: "bcc",
     client: "Bakersfield Concrete Coatings",
     category: "Concrete Coatings",
     summary:
-      "Targeted campaigns and sharp visuals that turned a niche coating service into the first name homeowners find.",
-    services: ["PPC", "Photography", "Social"],
+      "Targeted Meta ad campaigns and sharp visuals that turned a niche coating service into the first name homeowners find.",
+    services: ["Meta Ads", "Photography", "Social"],
+  },
+  {
+    id: "absolute-tile",
+    client: "Absolute Tile Kitchen and Bath",
+    category: "Tile, Kitchen & Bath",
+    summary:
+      "Facebook and Instagram ad campaigns and polished photography that fill the pipeline with kitchen and bath remodels.",
+    services: ["Social", "Meta Ads", "Photography"],
+  },
+  {
+    id: "whitestone",
+    client: "Whitestone Construction and Cabinetry",
+    category: "Construction & Cabinetry",
+    summary:
+      "Meta ads and on-brand social content, backed by photography that showcases their custom cabinetry and builds.",
+    services: ["Social", "Meta Ads", "Photography"],
   },
 ];

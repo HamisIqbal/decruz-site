@@ -3,6 +3,7 @@
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import {
   Target,
+  Megaphone,
   BarChart3,
   Share2,
   Camera,
@@ -19,6 +20,7 @@ const EASE_OUT_EXPO = [0.16, 1, 0.3, 1] as const;
 
 const icons: Record<string, LucideIcon> = {
   Target,
+  Megaphone,
   BarChart3,
   Share2,
   Camera,
@@ -41,7 +43,7 @@ const ctaPop: Variants = {
 };
 
 /**
- * "Our Marketing Services" — four service verticals as icon cards. The heading
+ * "Our Marketing Services" — service verticals as icon cards. The heading
  * reveals first, then the cards cascade in (fade + rise + slight 3D rotate/scale)
  * via the shared {@link MotionCard}, which also adds cursor-follow tilt, a soft
  * blush highlight, and gentle scroll parallax. Layout, type, and copy are
