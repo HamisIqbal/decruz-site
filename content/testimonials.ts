@@ -34,7 +34,7 @@ export const testimonials: Testimonial[] = [
     role: "Son of Ruben Trujillo",
     company: "Trujillo Masonry & Pools",
     quote: "$300,000 in new projects from running ads.",
-    poster: `/testimonials/v-300k.webp`,
+    poster: `/testimonials/juan-trujillo.webp`,
     videoSrc: `${CLOUD}/v1782490430/300k_ruasp3.mp4`,
   },
   {
@@ -50,7 +50,7 @@ export const testimonials: Testimonial[] = [
     id: "v-new",
     name: "Armando",
     company: "Absolute Tile Kitchen and Bath",
-    poster: `/testimonials/v-new.webp`,
+    poster: `/testimonials/armando.webp`,
     videoSrc: `${CLOUD}/v1782490462/testimonialnew_tcabw7.mp4`,
   },
   {
@@ -59,7 +59,7 @@ export const testimonials: Testimonial[] = [
     name: "Cameron",
     role: "Owner",
     company: "Bakersfield Concrete Coatings",
-    poster: `/testimonials/featured.webp`,
+    poster: `/testimonials/cameron-featured.webp`,
     videoSrc: `${CLOUD}/v1782428308/testimonial_qeywiq.mp4`,
   },
   {
