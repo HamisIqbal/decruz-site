@@ -7,6 +7,8 @@ import { ImageResponse } from "next/og";
 // close to the brand mark at favicon scale.
 export const size = { width: 64, height: 64 };
 export const contentType = "image/png";
+// Required so the icon prerenders to a static file under `output: "export"`.
+export const dynamic = "force-static";
 
 export default function Icon() {
   return new ImageResponse(

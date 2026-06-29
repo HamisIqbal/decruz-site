@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# deCRUZ — Construction Marketing
 
-## Getting Started
+Marketing site for deCRUZ, a construction marketing studio. Built with Next.js
+(App Router) and exported as a static site for hosting on any static web host.
 
-First, run the development server:
+## Tech stack
+
+- **Next.js 16** (App Router, static export)
+- **React 19** + **TypeScript**
+- **Tailwind CSS v4**
+- **GSAP** and **Framer Motion** for motion
+- **three.js** for the CTA fluid background
+
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site runs at http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+```
 
-## Learn More
+This generates a fully static site in the `out/` directory.
 
-To learn more about Next.js, take a look at the following resources:
+## Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The build is a static export (`output: "export"` in `next.config.ts`), so the
+contents of `out/` can be uploaded to any static host:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Run `npm run build`.
+2. Upload everything inside `out/` to the host's web root
+   (e.g. GoDaddy cPanel `public_html`).
 
-## Deploy on Vercel
+No Node.js runtime is required on the server.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `app/` — routes, layout, and metadata (including the generated favicon)
+- `components/` — UI, layout, section, and hook components
+- `content/` — site copy and data (testimonials, reviews, nav, etc.)
+- `lib/` — shared utilities (analytics, text helpers)
+- `public/` — static assets (brand, hero, client, and testimonial media)
