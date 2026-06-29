@@ -33,7 +33,7 @@ export const projects: Project[] = [
     category: "Masonry & Pools",
     summary:
       "Cinematic project videography that lets their craftsmanship sell before the first call.",
-    services: ["Video", "Branding"],
+    services: ["Video", "Branding", "Website"],
   },
   {
     id: "intrepid",
@@ -73,6 +73,6 @@ export const projects: Project[] = [
     category: "Construction & Cabinetry",
     summary:
       "Meta ads and on-brand social content, backed by photography that showcases their custom cabinetry and builds.",
-    services: ["Social", "Meta Ads", "Photography"],
+    services: ["Social", "Meta Ads", "Photography", "Website"],
   },
 ];
