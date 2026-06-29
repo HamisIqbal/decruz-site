@@ -35,13 +35,6 @@ export const reviews: Review[] = [
       "deCRUZ keeps our crew booked solid. The leads come in steady and they're real projects, not tire-kickers wasting our time.",
   },
   {
-    id: "diego",
-    name: "Diego",
-    company: "All Terrain Roofing",
-    quote:
-      "Our phone hasn't stopped. deCRUZ turned a quiet pipeline into steady, qualified roofing jobs we actually want to bid.",
-  },
-  {
     id: "armando",
     name: "Armando",
     company: "Absolute Tile, Kitchen and Bath",

@@ -68,7 +68,7 @@ export const testimonials: Testimonial[] = [
     role: "Owner",
     company: "MIM Construction",
     poster: `/testimonials/tapia.jpg`,
-    videoSrc: `${CLOUD}/v1782428408/MIM_Construction_-_Owner_Omar_Tapia_tltax9.mp4`,
+    videoSrc: `${CLOUD}/v1782762747/MIM_Construction_-_Owner_Omar_Tapia_tltax9.mp4`,
   },
   {
     id: "diego",
@@ -109,6 +109,36 @@ export const testimonials: Testimonial[] = [
     company: "Bakersfield Concrete Coatings",
     poster: `/testimonials/cameron.jpg`,
     videoSrc: `${CLOUD}/v1782428480/Bakersfield_Concrete_Coatings_-_Owner_-_Cameron_fzls99.mp4`,
+  },
+  {
+    id: "joseph-clark",
+    name: "Joseph Clark",
+    role: "Project Manager",
+    company: "OBL Construction",
+    poster: `${CLOUD}/v1782764436/Joseph-Clark-project-manager-OBL-Construction_xckaic.jpg`,
+    videoSrc: `${CLOUD}/v1782764436/Joseph-Clark-project-manager-OBL-Construction_xckaic.mp4`,
+  },
+  {
+    id: "maples",
+    name: "Maples Custom Building",
+    company: "Custom Home Builder",
+    poster: `${CLOUD}/v1782763274/maplescustombuilding_aw1x03.jpg`,
+    videoSrc: `${CLOUD}/v1782763274/maplescustombuilding_aw1x03.mp4`,
+  },
+  {
+    id: "oscar-2",
+    name: "Oscar Chavez",
+    company: "Whitestone Construction & Cabinetry",
+    poster: `${CLOUD}/v1782763906/Oscar_lmnaik.jpg`,
+    videoSrc: `${CLOUD}/v1782763906/Oscar_lmnaik.mp4`,
+  },
+  {
+    id: "cameron-new",
+    name: "Cameron",
+    role: "Owner",
+    company: "Bakersfield Concrete Coatings",
+    poster: `${CLOUD}/v1782763943/Bakersfield_Concrete_Coatings_-_Owner_-_Cameron_new_s8r6ah.jpg`,
+    videoSrc: `${CLOUD}/v1782763943/Bakersfield_Concrete_Coatings_-_Owner_-_Cameron_new_s8r6ah.mp4`,
   },
 ];
 
