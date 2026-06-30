@@ -5,7 +5,14 @@ import { contact as siteContact, socials, FORM_LINK } from "./site";
 export const footer = {
   tagline: "Construction marketing that builds demand, not just buildings.",
   columns: [
-    { title: "Navigate", links: navItems },
+    {
+      title: "Navigate",
+      links: [
+        ...navItems,
+        // Discreet entry — sits among the nav links so it isn't conspicuous.
+        { label: "Setting Expectations Video", href: "/setting-expectations" },
+      ],
+    },
     {
       title: "Services",
       links: [

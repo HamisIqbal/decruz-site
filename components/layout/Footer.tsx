@@ -195,16 +195,6 @@ export function Footer() {
           </span>
           <span className="px-4 py-3">{footer.legal.place}</span>
         </motion.div>
-
-        {/* Discreet, intentionally low-key link — not meant to draw the eye. */}
-        <div className="mt-4">
-          <Link
-            href="/setting-expectations"
-            className="font-mono text-[0.6rem] uppercase tracking-[0.12em] text-ink-muted/60 transition-colors hover:text-ink-muted"
-          >
-            Setting Expectations Video
-          </Link>
-        </div>
       </motion.div>
     </footer>
   );
