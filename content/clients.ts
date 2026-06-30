@@ -20,6 +20,7 @@ export const clientLogos: ClientLogo[] = [
   { src: "/clients/client-12.webp", name: "OBL Construction" },
   { src: "/clients/client-13.webp", name: "deCRUZ client" },
   { src: "/clients/client-14.webp", name: "deCRUZ client" },
+  { src: "/clients/client-15.jpg", name: "Spartan General Construction" },
 ];
 
 export const clientsIntro = {

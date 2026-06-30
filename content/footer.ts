@@ -24,7 +24,7 @@ export const footer = {
   socials,
   legal: {
     studio: "Construction Marketing Studio",
-    est: "EST. 2019",
+    est: "EST. 2025",
     place: "California",
   },
 } as const;
