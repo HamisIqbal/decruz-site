@@ -30,7 +30,7 @@ export const footer = {
   },
   socials,
   legal: {
-    studio: "Construction Marketing Studio",
+    studio: "Construction Marketing",
     est: "EST. 2025",
     place: "California",
   },

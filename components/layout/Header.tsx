@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { Logo } from "./Logo";
 import { MenuButton } from "./MenuButton";
@@ -40,6 +41,13 @@ export function Header() {
   const close = useCallback(() => setOpen(false), []);
   const toggle = useCallback(() => setOpen((v) => !v), []);
 
+  // Some pages have a light (white) top instead of the dark hero, so the
+  // transparent/white-content treatment would render the bar invisible there.
+  // Force the solid, dark-on-white treatment on those routes.
+  const pathname = usePathname();
+  const lightTop = pathname?.startsWith("/setting-expectations") ?? false;
+  const solid = scrolled || lightTop;
+
   // At the top the bar sits over the dark hero → light content; once condensed
   // White-dominant site: nav content is always black on white. The bar is
   // transparent over the white hero and gains a frosted backdrop on scroll.
@@ -55,7 +63,7 @@ export function Header() {
         <div className="flex h-[var(--nav-h)] items-center justify-between px-[var(--gutter)]">
           <Button
             href={primaryCta.href}
-            variant={scrolled ? "primary" : "inverse"}
+            variant={solid ? "primary" : "inverse"}
             size="md"
             /* Mobile: compact, wraps to two lines, capped width so it can't
                crowd out the logo. Desktop (sm+): single line, full size. */
@@ -68,13 +76,13 @@ export function Header() {
           </Button>
 
           <div className="flex items-center gap-2 sm:gap-4">
-            <Logo onDark={!scrolled} />
+            <Logo onDark={!solid} />
             <MenuButton
               ref={triggerRef}
               isOpen={open}
               onClick={toggle}
               controlsId={MENU_ID}
-              onDark={!scrolled}
+              onDark={!solid}
             />
           </div>
         </div>
