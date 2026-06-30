@@ -16,6 +16,9 @@ import { FORM_LINK } from "@/content/site";
  *   PageViews would just be noise.
  * - The one conversion we track is a click on any link to the Instagram-bio
  *   strategy-session form (see the delegated listener below).
+ * - `autoConfig=false` (set before init) disables Meta's automatic event
+ *   detection, so it stops auto-firing `SubscribedButtonClick`/microdata events
+ *   on every button — the only events sent are the ones we fire explicitly.
  *
  * No-ops entirely when `NEXT_PUBLIC_META_PIXEL_ID` is unset, so it's safe to
  * leave mounted before the ID is configured.
@@ -56,6 +59,7 @@ export function MetaPixel() {
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
         try{if(localStorage.getItem('decruz_cookie_consent')!=='granted'){fbq('consent','revoke');}}catch(e){fbq('consent','revoke');}
+        fbq('set', 'autoConfig', false, '${META_PIXEL_ID}');
         fbq('init', '${META_PIXEL_ID}');
         fbq('track', 'PageView');`}
       </Script>
