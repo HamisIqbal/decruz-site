@@ -15,7 +15,12 @@
  * No change to this file or the loader is needed.
  */
 
-export const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+// Configured pixel. Prefer the env var (`NEXT_PUBLIC_META_PIXEL_ID`) so the
+// client can swap pixels without a code change; fall back to the known
+// production ID so builds that lack the env var (e.g. Vercel preview, a fresh
+// clone) still fire. A Pixel ID isn't secret — it's public in the page source.
+export const META_PIXEL_ID =
+  process.env.NEXT_PUBLIC_META_PIXEL_ID || "948841337585829";
 
 /** Standard events Meta recognises out of the box (used for optimisation/reporting). */
 export type MetaStandardEvent =
@@ -74,4 +79,57 @@ export function pageview(): void {
 export function consent(action: "grant" | "revoke"): void {
   if (typeof window === "undefined" || typeof window.fbq !== "function") return;
   window.fbq("consent", action);
+}
+
+/* --------------------------------------------------------------------------
+ * Cookie-consent gate
+ *
+ * The pixel base code (see MetaPixel.tsx) calls `fbq('consent','revoke')`
+ * *before* init unless this localStorage key already reads "granted", so on a
+ * first visit the pixel loads but holds every event until the visitor chooses.
+ * The banner persists the choice here and releases (or keeps holding) events.
+ * ------------------------------------------------------------------------ */
+
+/** localStorage key holding the visitor's cookie choice. Read by the inline
+ *  init script too — keep the literal in MetaPixel.tsx in sync if this changes. */
+export const CONSENT_STORAGE_KEY = "decruz_cookie_consent";
+
+export type ConsentChoice = "granted" | "denied";
+
+/** The visitor's saved choice, or null if they haven't decided yet. */
+export function getStoredConsent(): ConsentChoice | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const v = window.localStorage.getItem(CONSENT_STORAGE_KEY);
+    return v === "granted" || v === "denied" ? v : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Persist the visitor's choice and apply it to the live pixel: granting
+ * releases the events held since load (and re-fires the current PageView);
+ * denying keeps the pixel in its revoked, no-send state.
+ */
+export function storeConsent(choice: ConsentChoice): void {
+  if (typeof window !== "undefined") {
+    try {
+      window.localStorage.setItem(CONSENT_STORAGE_KEY, choice);
+    } catch {
+      /* private mode / storage disabled — choice just won't persist */
+    }
+  }
+  if (choice === "granted") {
+    consent("grant");
+    pageview();
+  } else {
+    consent("revoke");
+  }
+}
+
+/** Fire the site's single conversion: a click through to the strategy-session
+ *  form (the same link used in the Instagram bio and every "book a session" CTA). */
+export function trackFormCtaClick(): void {
+  track("Lead", { content_name: "Strategy session form" });
 }

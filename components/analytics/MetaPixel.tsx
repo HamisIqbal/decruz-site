@@ -3,7 +3,8 @@
 import Script from "next/script";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { META_PIXEL_ID, pageview } from "@/lib/meta-pixel";
+import { META_PIXEL_ID, pageview, trackFormCtaClick } from "@/lib/meta-pixel";
+import { FORM_LINK } from "@/content/site";
 
 /**
  * Meta (Facebook) Pixel loader + SPA page-view tracking.
@@ -22,10 +23,11 @@ import { META_PIXEL_ID, pageview } from "@/lib/meta-pixel";
  * `<Suspense>` boundary (done in app/layout.tsx) — otherwise Next would force
  * the whole tree to client-render.
  *
- * CONSENT: if the client decides they need a cookie-consent gate, the cleanest
- * change is to call `consent("revoke")` inside the init snippet below (before
- * `init`), then call `consent("grant")` from your banner's "Accept" handler.
- * See lib/meta-pixel.ts.
+ * CONSENT: the init snippet calls `fbq('consent','revoke')` before `init`
+ * unless this visitor has already chosen "granted" (persisted in localStorage),
+ * so on a first visit the pixel loads but holds every event until they accept.
+ * The cookie banner (components/analytics/CookieConsent.tsx) releases or keeps
+ * holding events via `storeConsent()` in lib/meta-pixel.ts.
  */
 export function MetaPixel() {
   const pathname = usePathname();
@@ -36,6 +38,21 @@ export function MetaPixel() {
     pageview();
     // pathname + search string together identify a unique URL.
   }, [pathname, searchParams]);
+
+  // The site's single conversion: any click through to the strategy-session
+  // form (Instagram-bio link, shared by every "book a session" CTA + footer
+  // service links). A delegated listener catches it wherever it's rendered, so
+  // we never have to touch each call site. Held by consent-revoke until accept.
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      const anchor = (e.target as HTMLElement)?.closest?.("a");
+      if (anchor && anchor.getAttribute("href")?.startsWith(FORM_LINK)) {
+        trackFormCtaClick();
+      }
+    }
+    document.addEventListener("click", onClick, true);
+    return () => document.removeEventListener("click", onClick, true);
+  }, []);
 
   if (!META_PIXEL_ID) return null;
 
@@ -50,6 +67,7 @@ export function MetaPixel() {
         t.src=v;s=b.getElementsByTagName(e)[0];
         s.parentNode.insertBefore(t,s)}(window, document,'script',
         'https://connect.facebook.net/en_US/fbevents.js');
+        try{if(localStorage.getItem('decruz_cookie_consent')!=='granted'){fbq('consent','revoke');}}catch(e){fbq('consent','revoke');}
         fbq('init', '${META_PIXEL_ID}');
         fbq('track', 'PageView');`}
       </Script>
