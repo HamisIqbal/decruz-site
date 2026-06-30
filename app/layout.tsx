@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Suspense } from "react";
 import { fontVariables } from "./fonts";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -42,9 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${fontVariables} h-full`}>
       <body className="min-h-full antialiased">
-        <Suspense fallback={null}>
-          <MetaPixel />
-        </Suspense>
+        <MetaPixel />
         <ScrollProgress />
         <Header />
         {children}

@@ -109,8 +109,8 @@ export function getStoredConsent(): ConsentChoice | null {
 
 /**
  * Persist the visitor's choice and apply it to the live pixel: granting
- * releases the events held since load (and re-fires the current PageView);
- * denying keeps the pixel in its revoked, no-send state.
+ * releases the events held since load (including the initial PageView, so we
+ * don't re-fire it here); denying keeps the pixel in its revoked, no-send state.
  */
 export function storeConsent(choice: ConsentChoice): void {
   if (typeof window !== "undefined") {
@@ -120,12 +120,7 @@ export function storeConsent(choice: ConsentChoice): void {
       /* private mode / storage disabled — choice just won't persist */
     }
   }
-  if (choice === "granted") {
-    consent("grant");
-    pageview();
-  } else {
-    consent("revoke");
-  }
+  consent(choice === "granted" ? "grant" : "revoke");
 }
 
 /** Fire the site's single conversion: a click through to the strategy-session
