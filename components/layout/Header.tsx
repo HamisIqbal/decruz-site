@@ -45,7 +45,9 @@ export function Header() {
   // transparent/white-content treatment would render the bar invisible there.
   // Force the solid, dark-on-white treatment on those routes.
   const pathname = usePathname();
-  const lightTop = pathname?.startsWith("/setting-expectations") ?? false;
+  const lightTopRoutes = ["/setting-expectations", "/privacy-policy", "/terms"];
+  const lightTop =
+    lightTopRoutes.some((route) => pathname?.startsWith(route)) ?? false;
   const solid = scrolled || lightTop;
 
   // At the top the bar sits over the dark hero → light content; once condensed
